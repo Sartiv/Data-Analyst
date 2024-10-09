@@ -38,10 +38,10 @@ This question aims to quantify the frequency of rides between the two groups. Me
 ________________________________________
 
 ### Prepare and Process Phases:
-For this analysis, I gathered trip data for the last 12 months, covering the period from September 2023 to August 2024. The dataset includes information for both casual riders and members of the Cyclistic bike-sharing service. Here's how I approached the data preparation and cleaning process:
+For this analysis, I gathered trip data for the last 12 months [from here](https://divvy-tripdata.s3.amazonaws.com/index.html), covering the period from September 2023 to August 2024. The dataset includes information for both casual riders and members of the Cyclistic bike-sharing service. Here's how I approached the data preparation and cleaning process:
 
 **1.	Data Collection:**
-I downloaded individual .csv files for each month and consolidated the data into a single dataset using the R programming language. Specifically, I used the **list.files(), lapply(), and bind_rows()** functions to read and merge the files.
+I downloaded individual .csv files for each month and consolidated the data into a single dataset using the R programming language. Specifically, I used the **list.files(), lapply(), and bind_rows()** functions to read and merge the files. You can view the script R [here](./Scripts/Data_Cleaning_Cyclist.R)
 
 **2.	Dataset Columns:**
 The unified dataset contains the following key columns:
@@ -97,15 +97,17 @@ Data from the last 12 months (September 2023 to August 2024) was collected, comp
 
 •	Casual Riders: Completed 2.05 million rides, making up **35.89% of the total.**
 
-### bservations:
+### Observations:
 
 **1.	Average Ride Duration:**
+
+![Total Number Of Riders](./Visuals/Total_Number_of_Riders.png)
 
 o	Casual riders use bikes for an average of **25.75 minutes per ride.**
 
 o	Members use bikes for significantly less time, averaging **12.94 minutes per ride.**
 
-Casual riders spend double the time per ride compared to members, which likely reflects their more leisurely or tourist-oriented use of the service.
+Casual riders spend double the time per ride compared to members, **which likely reflects their more leisurely or tourist-oriented use of the service.**
 
 **2.	Missing Data:**
 
@@ -115,27 +117,38 @@ These gaps slightly affect the precision of location-based analysis, but the imp
 
 **3.	Starting and Ending Locations:**
 
+![Top 5 Starting and Ending Locations of Casual Riders](./Visuals/Top_5_Starting_and_Ending_Locations_of_Casual_Riders.png)
+![Top 5 Starting and Ending Locations of Member Riders](./Visuals/Top_5_Starting_and_Ending_Locations_of_Members_Riders.png)
+
 o	Member Riders: Common starting and ending locations for members include areas near offices, shops, and transportation hubs, indicating that members predominantly use bikes for commuting or practical daily transportation. Key stations include **Clinton St & Washington Blvd, Kingsbury St & Kinzie St, and Clark St & Elm St.**
 
 o	Casual Riders: The most popular locations for casual riders are near tourist attractions and recreational areas, such as **Streeter Dr & Grand Ave, DuSable Lake Shore Dr & Monroe St, and Millennium Park**, which aligns with their leisure-based usage patterns.
 
 **4.	Weekend Usage Patterns:**
 
+![Bike Usage on Weekdays vs Weekends](./Visuals/Bike_Usage_on_Weekdays_vs_Weekends.png)
+
 **o	Members:** Bike usage decreases significantly during weekends, suggesting members primarily use the service for commuting on weekdays.
 
 **o	Casual Riders:** On the contrary, casual riders increase their bike usage on weekends, particularly on Saturdays. This indicates that casual riders are **more likely** to use bikes for recreational purposes during their free time.
 
 **5.	Time of Day:**
+
+![Bike Usage by Time of Day](./Visuals/Bike_Usage_by_Time_of_Day.png)
+
 **o	Members:** Peak bike usage occurs during commuting hours, notably **at 8:00 AM and 5:00 PM**, aligning with the start and end of the typical workday.
 **o	Casual Riders:** Their usage peaks between **10:00 AM and 4:00 PM**, suggesting that casual users prefer riding during the middle of the day when they are likely engaging in recreational activities.
 
 **6.	Seasonality:**
+
+![Percentage of Riders by Month](./Visuals/Percentage_of_Riders_by_Month.png)
+
 **o	Casual Riders:** Casual rider usage is concentrated during the warmer months (May to September), **accounting for 70% of their annual rides**, which reinforces the idea that casual riders use bikes mainly for leisure.
-**o	Members:** Member usage is more stable year-round, with **6.4% of their rides occurring in the same warmer months**, though they maintain steady activity throughout the year, likely due to the practical nature of their bike use.
+**o	Members:** Member usage is more stable year-round, with **6.4% of their rides occurring in the same warmer months**. However, they maintain steady activity throughout the year, likely due to the practical nature of their bike use.
 
 ## Conclusions
 
-From this analysis, it’s clear that casual riders predominantly use the bike-sharing service for leisurely rides, especially in tourist-heavy areas and during the summer months. They are less likely to ride during commuting hours or outside of peak tourism seasons. Conversely, members primarily use the service for commuting, showing more consistent usage throughout the week and across all months.
+From this analysis, it’s clear that casual riders predominantly use the bike-sharing service for leisurely rides, especially in tourist-heavy areas and during the summer months. They are less likely to ride during commuting hours or outside peak tourism seasons. Conversely, members primarily use the service for commuting, showing more consistent usage throughout the week and across all months.
 The difference in ride durations also supports this conclusion: members are time-conscious and use the bikes to cover short distances efficiently, whereas casual riders are more likely to enjoy longer, unhurried rides.
 
 ### Recommendations for Stakeholders
