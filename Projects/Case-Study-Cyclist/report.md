@@ -93,15 +93,19 @@ After cleaning the dataset, I exported the consolidated data into a .csv file an
 
 Data from the last 12 months (September 2023 to August 2024) was collected, comprising approximately 5.7 million bike rides. The dataset provided key insights into usage patterns by both casual riders and members.
 
+![Total Number Of Riders](./Visuals/Total_Number_of_Rides.png)
+
 •	Members: Completed 3.65 million rides, accounting for **64.11% of the total.**
 
 •	Casual Riders: Completed 2.05 million rides, making up **35.89% of the total.**
 
 ### Observations:
 
+[(SQL Queries)](./Scripts/Sql_Queries_Cyclist.sql)
+
 **1.	Average Ride Duration:**
 
-![Total Number Of Riders](./Visuals/Total_Number_of_Riders.png)
+![Average Bike Usage Time](./Visuals/Average_Bike_Usage_Time.png)
 
 o	Casual riders use bikes for an average of **25.75 minutes per ride.**
 
@@ -137,6 +141,7 @@ o	Casual Riders: The most popular locations for casual riders are near tourist a
 ![Bike Usage by Time of Day](./Visuals/Bike_Usage_by_Time_of_Day.png)
 
 **o	Members:** Peak bike usage occurs during commuting hours, notably **at 8:00 AM and 5:00 PM**, aligning with the start and end of the typical workday.
+
 **o	Casual Riders:** Their usage peaks between **10:00 AM and 4:00 PM**, suggesting that casual users prefer riding during the middle of the day when they are likely engaging in recreational activities.
 
 **6.	Seasonality:**
@@ -144,7 +149,8 @@ o	Casual Riders: The most popular locations for casual riders are near tourist a
 ![Percentage of Riders by Month](./Visuals/Percentage_of_Riders_by_Month.png)
 
 **o	Casual Riders:** Casual rider usage is concentrated during the warmer months (May to September), **accounting for 70% of their annual rides**, which reinforces the idea that casual riders use bikes mainly for leisure.
-**o	Members:** Member usage is more stable year-round, with **6.4% of their rides occurring in the same warmer months**. However, they maintain steady activity throughout the year, likely due to the practical nature of their bike use.
+
+**o	Members:** Member usage is more stable year-round, with **56.4% of their rides occurring in the same warmer months**. However, they maintain steady activity throughout the year, likely due to the practical nature of their bike use.
 
 ## Conclusions
 
