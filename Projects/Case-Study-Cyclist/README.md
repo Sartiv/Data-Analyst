@@ -7,6 +7,7 @@ This project analyzes bike usage data over a period of 12 months (September 2023
 - **Scripts**: Folder with all data cleaning and SQL queries used.
 - **Visuals**: Folder with all visualizations used in the analysis.
 - **Data**: Raw data used in the analysis.
+- **Dashboards**: Dashboards with POWER BI.
 
 ## Tools Used:
 - R for data cleaning and analysis
