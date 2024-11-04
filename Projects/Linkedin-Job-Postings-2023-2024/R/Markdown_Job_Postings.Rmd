@@ -260,7 +260,7 @@ ggplot(remote_analysis, aes(x = factor(company_size), y = remote_percentage)) +
 
 ``` {r comparison_description_views, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
 # Φόρτωση των αποθηκευμένων αποτελεσμάτων
-comparison <- read.csv("G:/Projects/Job Posting/R Language/comparison_results.csv")
+comparison <- read.csv("data/comparison_results.csv")
 
 # Εμφάνιση των top 10 λέξεων με μεγαλύτερη διαφορά
 head(comparison, 10)
