@@ -31,7 +31,7 @@ All analysis was conducted in R, using R Markdown to document code and visualiza
 The full project report, including detailed analysis, data cleaning steps, visualizations, and conclusions, is available as a PDF document. This report provides insights into job market trends, skill demand, and factors influencing job posting engagement on LinkedIn for 2023-2024.
 
 You can view or download the complete report here:
-- [Job Postings Report (PDF)](report/JOB POSTING AT LINKEDIN 2023-2024 - report.pdf)
+- [Job Postings Report (PDF)](report/Job_Posting_at_Linkedin_2023_24_report.pdf)
 
 The report covers:
 1. **Overview of Data Cleaning and Preparation**: Steps taken to preprocess the data and create a clean dataset for analysis.
@@ -53,7 +53,7 @@ Linkedin-job-postings-2023-2024/
     ├── Job Posting.R
     ├── Readme.md
 ├── report/
-│   └── JOB POSTING AT LINKEDIN 2023-2024.pdf
+│   └── Job_Posting_at_Linkedin_2023_24_report.pdf
 ```
 
 ## How to Use
