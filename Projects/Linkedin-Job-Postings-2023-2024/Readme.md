@@ -28,7 +28,7 @@ All analysis was conducted in R, using R Markdown to document code and visualiza
 
 ### Repository Structure
 ```
-Linkedin_job_postings_2023_2024/
+Linkedin-job-postings-2023-2024/
 ├── README.md
 ├── Markdown_job_postings.Rmd
 ├── data/
