@@ -1,0 +1,359 @@
+---
+title: "Job Postings"
+author: "Ioannis Mylogiannakis"
+date: "2024-10-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In the context of my practice as a Data Analyst, I decided to analyze a dataset from Kaggle (<https://www.kaggle.com/datasets/arshkon/linkedin-job-postings>), which includes all job postings published on **the LinkedIn platform during the months December 2023 - April 2024.** The goal of this project is to highlight the needs of the modern labor market, examine the existing trend towards remote work, and explore how the required skills are generally evolving.
+Through this analysis, I aim to provide a comprehensive picture of current trends in the job market, focusing on the most sought-after skills and how companies are adapting to new working conditions. This project will contribute to a better understanding of market demands for both job seekers and employers.
+
+## ASK Phase
+
+As part of this analysis, I have identified a series of key questions aimed at gaining a thorough understanding of job market trends and characteristics by utilizing the LinkedIn job postings dataset. These questions are organized into five main thematic categories:
+
+1.	Job Market Trends: This section examines the most in-demand job positions and the skills that appear most frequently in job postings. This analysis will help to highlight what is essential for employers at this time and which skills candidates should focus on developing.
+2.	Salary Information: This section will analyze salary ranges by position and location, as well as the impact of job type on compensation. Additionally, we will investigate whether there is a correlation between salary offerings and the number of views or applications, as well as which benefits are most attractive to candidates.
+3.	Locations and Remote Work: Here, the focus is on identifying areas with the highest number of job postings, the availability of remote work, and any seasonal trends. The analysis will also explore the relationship between company size and remote work opportunities.
+4.	Skills Requirements: This section will examine the most in-demand technical and soft skills, as well as emerging skills that may be gaining traction in the job market.
+5.	Job Posting Characteristics: Additional factors are explored here, such as any correlation between job description content and the number of views and applications, which experience levels are in demand, and how factors like application type and sponsored listings impact views and applications. Furthermore, the potential influence of a company’s reputation (via follower count) on candidate interest will be assessed.
+These questions form the foundation of the analysis, allowing me to draw valuable insights into the job market and provide information that can benefit both employers and candidates. Through this data analysis, I aim to highlight crucial insights that will enhance the understanding of market demands and opportunities.
+
+## Data Preparation Phase
+
+For data cleaning and preparation, I used the R programming language. Through a series of commands and procedures, I performed file merges, removed columns that were not essential to the analysis questions, and formatted the dataset to ensure suitability for further processing. All data cleaning and preparation commands are available here (a link to the .R file will be added).
+
+
+## Visualization
+
+( For the complete code used to generate this analysis, please refer to the [R script on GitHub](https://github.com/username/repository/filename.R). )
+
+
+### Top 15 Most Viewed Job Titles 
+
+```{r top-jobs-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+# Φόρτωση των βιβλιοθηκών
+library(ggplot2)
+library(dplyr)
+
+# Load postings_cleaned.RData
+load("G:/Projects/Job Posting/R Language/postings_cleaned.RData")
+
+# Ομαδοποίηση και υπολογισμός συνολικών views και applies ανά τίτλο
+popular_jobs <- postings_cleaned %>%
+  group_by(title) %>%
+  summarize(total_views = sum(views, na.rm = TRUE),
+            total_applies = sum(applies, na.rm = TRUE)) %>%
+  arrange(desc(total_views), desc(total_applies))
+
+# Προετοιμασία δεδομένων για τα 15 πιο περιζήτητα επαγγέλματα
+top_jobs <- popular_jobs %>% head(15)
+
+# Δημιουργία διαγράμματος
+ggplot(top_jobs, aes(x = reorder(title, total_views), y = total_views)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Top 15 Most Viewed Job Titles",
+       x = "Job Title",
+       y = "Total Views") +
+  coord_flip()
+```
+
+*This bar chart illustrates the top 15 most viewed job titles, providing insights into the most in-demand roles based on total views. Each job title is ordered by the number of views, reflecting its popularity among job seekers.*
+
+### Top 20 Most Requested Skills
+```{r top-skills-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+# Load necessary libraries
+library(dplyr)
+library(tidytext)
+library(stringr)
+
+
+# Separate the skills into individual words/phrases
+skills_count <- postings_cleaned %>%
+  # Select only the skills_desc column
+  select(skills_desc) %>%
+  # Remove any rows with NA
+  filter(!is.na(skills_desc)) %>%
+  # Separate each word in skills_desc into individual rows
+  unnest_tokens(skill, skills_desc, token = "words") %>%
+  # Count the occurrences of each skill
+  count(skill, sort = TRUE)
+
+skills_keywords <- c(
+  "data", "analysis", "analyst", "sql", "python", "excel", "powerbi", "tableau", "visualization",
+  "statistics", "modeling", "machine", "learning", "project", "management", "communication",
+  "presentation", "reporting", "database", "engineering", "cloud", "azure", "aws", "big", "data",
+  "r", "java", "javascript", "agile", "scrum", "hadoop", "spark", "analytics", "research", 
+  "problem-solving", "forecasting", "data-driven", "optimization", "ai", "artificial", 
+  "intelligence", "ml", "nlp", "deep", "learning", "predictive", "etl", "dashboard",
+  
+  # Skills from skill.csv
+  "art", "creative", "design", "advertising", "product management", "distribution", "education",
+  "training", "project management", "consulting", "purchasing", "supply chain", "analyst", 
+  "health care provider", "research", "science", "general business", "customer service", 
+  "strategy/planning", "finance", "legal", "engineering", "quality assurance", "business development",
+  "information technology", "administrative", "production", "marketing", "public relations", 
+  "writing/editing", "accounting/auditing", "human resources", "manufacturing", "sales", "management"
+)
+
+filtered_skills_count <- skills_count %>%
+  filter(skill %in% skills_keywords)
+
+# Select top 10 most common skills for visualization
+top_skills <- head(filtered_skills_count, 20)
+
+# Create the horizontal bar chart
+ggplot(top_skills, aes(x = reorder(skill, n), y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Top 20 Most Requested Skills",
+       x = "Skills",
+       y = "Frequency") +
+  coord_flip() +
+  theme_minimal()
+```
+
+*This bar chart showcases the ten most requested skills across job postings. It highlights key technical and soft skills that employers prioritize, giving an overview of the competencies in high demand.*
+
+### Salary Range for Top 15 Most Viewed Job Titles
+``` {r top-skills-salary-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+# Salary per popular job
+library(dplyr)
+library(ggplot2)
+library(scales)  # Για τη μορφοποίηση των αριθμών στον άξονα
+
+# Δημιουργία φιλτραρισμένου dataset με τα όρια που έθεσες
+filtered_salary_data <- postings_cleaned %>%
+  filter(normalized_salary >= 15000, normalized_salary <= 500000)
+
+# Επιλογή των 15 κορυφαίων τίτλων εργασίας βάσει προβολών
+top_jobs <- popular_jobs %>% head(15)
+
+# Δημιουργία box plot για το εύρος μισθών στις top 15 θέσεις εργασίας
+ggplot(filtered_salary_data %>% filter(title %in% top_jobs$title), 
+       aes(x = reorder(title, -normalized_salary), y = normalized_salary)) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(labels = comma) +  # Μορφοποίηση του άξονα y με απλά νούμερα
+  labs(title = "Salary Range for Top 15 Most Viewed Job Titles",
+       x = "Job Title",
+       y = "Salary") +
+  coord_flip() +
+  theme_minimal()
+```
+
+*This box plot displays the salary range for the top 15 most viewed job titles. It shows the variation in compensation within each role, indicating both minimum and maximum salary levels, which help to understand salary expectations for these popular positions.*
+
+### Average Salary by State in the USA
+
+```{r state-salary-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(usmap)
+library(scales)
+
+# Υπολογισμός μέσου μισθού ανά πολιτεία
+state_salary <- filtered_salary_data %>%
+  group_by(state) %>%
+  summarize(avg_salary = mean(normalized_salary, na.rm = TRUE))
+
+# Δημιουργία του χάρτη των ΗΠΑ με χρωματική κωδικοποίηση ανάλογα με τον μέσο μισθό
+plot_usmap(data = state_salary, values = "avg_salary", color = "white") +
+  scale_fill_continuous(low = "lightblue", high = "darkblue", label = dollar) +
+  labs(title = "Average Salary by State in the USA",
+       fill = "Average Salary") +
+  theme(legend.position = "right")
+```
+
+
+*This choropleth map provides an overview of the average salary by state, with color variations representing different salary levels. Darker shades indicate states with higher average salaries, offering a geographic perspective on salary distribution across the U.S.*
+
+``` {r states-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# Υπολογισμός του πλήθους των αγγελιών ανά πολιτεία
+state_counts <- postings_cleaned %>%
+  filter(!is.na(state)) %>%
+  group_by(state) %>%
+  summarize(job_count = n()) %>%
+  arrange(desc(job_count))
+
+# Επιλογή των 15 κορυφαίων πολιτειών για την οπτικοποίηση
+top_15_states <- state_counts %>% head(15)
+
+# Δημιουργία οριζόντιου ραβδογράμματος
+ggplot(top_15_states, aes(x = reorder(state, job_count), y = job_count)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Top 15 States by Job Postings",
+       x = "State",
+       y = "Number of Job Postings") +
+  coord_flip() +
+  theme_minimal()
+```
+
+*This horizontal bar chart displays the top 15 U.S. states by the number of job postings. The visualization highlights the states with the highest job market activity, indicating regions with the most employment opportunities.*
+
+``` {r top-remote-jobs-plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# Φιλτράρουμε τις remote θέσεις και υπολογίζουμε το πλήθος των αγγελιών ανά τίτλο
+remote_job_counts <- postings_cleaned %>%
+  filter(remote_allowed == 1) %>%
+  group_by(title) %>%
+  summarize(remote_count = n()) %>%
+  arrange(desc(remote_count))
+
+# Επιλέγουμε τις κορυφαίες 10 remote θέσεις
+top_remote_jobs <- remote_job_counts %>% head(10)
+
+# Δημιουργία οριζόντιου ραβδογράμματος για τις πιο περιζήτητες remote θέσεις
+ggplot(top_remote_jobs, aes(x = reorder(title, remote_count), y = remote_count)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Top 10 Most Demanded Remote Job Titles",
+       x = "Job Title",
+       y = "Number of Remote Job Postings") +
+  coord_flip() +
+  theme_minimal()
+```
+
+*This horizontal bar chart displays the top 10 most demanded remote job titles. It highlights roles with the highest number of remote job postings, showing which positions are most frequently offered with remote work options.*
+
+### % Remote Postings by Company Size
+
+``` {r percentage_remote_postings_by_company_size_plot, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# Φιλτράρουμε για remote θέσεις εργασίας και υπολογίζουμε το πλήθος ανά μέγεθος εταιρείας
+remote_by_company_size <- postings_cleaned %>%
+  filter(remote_allowed == 1) %>%
+  group_by(company_size) %>%
+  summarize(remote_count = n(),
+            avg_employee_count = mean(employee_count, na.rm = TRUE))
+
+# Υπολογισμός του ποσοστού remote εργασιών ανά μέγεθος εταιρείας (για όλες τις εταιρείες)
+total_by_company_size <- postings_cleaned %>%
+  group_by(company_size) %>%
+  summarize(total_count = n())
+
+# Συνδυάζουμε τα δεδομένα για να υπολογίσουμε το ποσοστό remote εργασιών
+remote_analysis <- remote_by_company_size %>%
+  left_join(total_by_company_size, by = "company_size") %>%
+  mutate(remote_percentage = (remote_count / total_count) * 100)
+
+# Δημιουργία bar plot για το ποσοστό των remote εργασιών ανά μέγεθος εταιρείας
+ggplot(remote_analysis, aes(x = factor(company_size), y = remote_percentage)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Percentage of Remote Jobs by Company Size",
+       x = "Company Size",
+       y = "Percentage of Remote Jobs (%)") +
+  theme_minimal()
+```
+
+*This bar chart illustrates the percentage of remote job postings by company size. It provides insight into whether larger or smaller companies are more likely to offer remote work opportunities.*
+
+``` {r comparison_description_views, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+# Φόρτωση των αποθηκευμένων αποτελεσμάτων
+comparison <- read.csv("G:/Projects/Job Posting/R Language/comparison_results.csv")
+
+# Εμφάνιση των top 10 λέξεων με μεγαλύτερη διαφορά
+head(comparison, 10)
+
+```
+
+*This analysis compares the frequency of technical terms and skill-related keywords in job descriptions with the highest and lowest view counts. The results highlight specific terms that are more common in high-interest job postings, offering insight into language that may attract more attention.*
+
+``` {r average-number-applications-by-application-type, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# Υπολογισμός του μέσου αριθμού αιτήσεων ανά application_type
+application_effect <- postings_cleaned %>%
+  filter(!is.na(applies), !is.na(application_type)) %>%
+  group_by(application_type) %>%
+  summarize(avg_applies = mean(applies, na.rm = TRUE),
+            total_applies = sum(applies, na.rm = TRUE),
+            count = n())
+
+# Δημιουργία bar plot για να δείξουμε τον μέσο αριθμό αιτήσεων ανά application_type
+ggplot(application_effect, aes(x = application_type, y = avg_applies, fill = application_type)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Number of Applications by Application Type",
+       x = "Application Type",
+       y = "Average Number of Applications") +
+  theme_minimal()
+```
+
+*This bar chart illustrates the average number of applications by application type, comparing offsite and complex/simple onsite methods. It highlights how different application methods may influence applicant interest.*
+
+### Relationship between followers/applications/views
+
+``` {r relationship-followers-applications-views-plots, echo=FALSE, fig.width=8, fig.height=6, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(scales)
+
+# Υπολογισμός του συντελεστή συσχέτισης
+correlation_applies <- cor(postings_cleaned$follower_count, postings_cleaned$applies, use = "complete.obs")
+correlation_views <- cor(postings_cleaned$follower_count, postings_cleaned$views, use = "complete.obs")
+
+# Εκτύπωση των συντελεστών συσχέτισης
+cat("Correlation between follower_count and applies:", correlation_applies, "\n")
+cat("Correlation between follower_count and views:", correlation_views, "\n")
+
+
+# Δημιουργία διαγράμματος διασποράς για follower_count και applies με μορφοποίηση άξονα
+ggplot(postings_cleaned, aes(x = follower_count, y = applies)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Scatter Plot of Follower Count vs. Applications",
+       x = "Follower Count",
+       y = "Number of Applications") +
+  theme_minimal()
+
+# Δημιουργία διαγράμματος διασποράς για follower_count και views με μορφοποίηση άξονα
+ggplot(postings_cleaned, aes(x = follower_count, y = views)) +
+  geom_point(alpha = 0.5, color = "darkgreen") +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Scatter Plot of Follower Count vs. Views",
+       x = "Follower Count",
+       y = "Number of Views") +
+  theme_minimal()
+
+```
+
+
+*These scatter plots illustrate the relationship between a company's follower count and the number of applications and views for its job postings. The concentration of points around lower follower counts suggests that follower count may not significantly impact applicant interest or visibility.*
+
+## Conclusions:
+
+1) **Top 15 Most Viewed Job Titles**: The most viewed positions include Executive Assistant (>250,000 views), Data Analyst (>150,000 views), Software Engineer, and Project Manager.
+
+2) **Top 20 Most Requested Skills**: The most in-demand skills are Management, Communication, Education, Data, Sales, Marketing, Engineering, and Training.
+
+3) **Salary Range for Top 15 Most Viewed Job Titles**: The position of Chief Operating Officer shows the largest salary range, followed by Software Engineer.
+
+4) **Average Salary by State in the USA**: A map of the USA displays the average salary by state, facilitating comparison across regions.
+
+5) **Top 15 States by Job Postings**: The states with the highest number of job postings are California (CA) and Texas (TX), each with over 100,000 postings.
+
+6) **Top 10 Most Demanded Remote Job Titles**: Sales Manager is the top remote position with over 600 postings, while the second most popular remote title, Licensed Therapist for Online Counseling, has approximately 90+ postings.
+
+7) **Percentage of Remote Postings by Company Size**: Smaller companies tend to offer more remote work opportunities. For companies of size 7, remote positions are limited.
+
+8) **Frequency of Technical Terms and Skill-Related Keywords in Job Descriptions**:
+   The most frequently appearing terms in high-demand job descriptions include Data, Project, Design, Management, Cloud, Analysis, Marketing, Engineering, SQL, and Analytics.
+
+9) **Average Number of Applications by Application Type**: COM-ONS job postings have an average of around 15 applications, while OFF postings average around 6 applications, and SIM-ONS postings average around 8.
+
+10) **Relationship between Follower Count and Applications or Views**: No strong correlation was observed, as most points in the applications and views scatter plots are concentrated near zero. This suggests that companies with fewer followers do not attract significantly higher engagement on their job postings.
+
+These conclusions provide a comprehensive overview of job demand, skills sought, and factors influencing job posting engagement.
