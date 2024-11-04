@@ -26,13 +26,34 @@ The project uses multiple `.csv` files from the Kaggle dataset:
 ## Code and Execution
 All analysis was conducted in R, using R Markdown to document code and visualizations. The primary analysis file, `Markdown_job_postings.Rmd`, and supplementary results file, `comparison_results.csv`, are included in this repository.
 
+## Project Report
+
+The full project report, including detailed analysis, data cleaning steps, visualizations, and conclusions, is available as a PDF document. This report provides insights into job market trends, skill demand, and factors influencing job posting engagement on LinkedIn for 2023-2024.
+
+You can view or download the complete report here:
+- [Job Postings Report (PDF)](report/Job_Postings_Report.pdf)
+
+The report covers:
+1. **Overview of Data Cleaning and Preparation**: Steps taken to preprocess the data and create a clean dataset for analysis.
+2. **Key Questions and Findings**: Analysis of the top job titles, skills in demand, salary ranges, and trends in remote work.
+3. **Visualizations and Insights**: Charts and graphs illustrating job posting metrics and patterns across various dimensions.
+4. **Conclusions**: Summary of insights on job trends, skill requirements, and company practices based on LinkedIn data.
+
+Refer to this report for an in-depth view of the findings and to understand the methodologies used throughout the analysis.
+
+
 ### Repository Structure
 ```
 Linkedin-job-postings-2023-2024/
 ├── README.md
-├── Markdown_job_postings.Rmd
-├── data/
-│   └── comparison_results.csv
+├── R
+│   └── data/
+    │   └── comparison_results.csv
+    ├── Markdown_job_postings.Rmd
+    ├── Job Posting.R
+    ├── Readme.md
+├── report/
+│   └── JOB POSTING AT LINKEDIN 2023-2024.pdf
 ```
 
 ## How to Use
