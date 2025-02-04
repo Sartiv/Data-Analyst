@@ -1,0 +1,11 @@
+SELECT DISTINCT TeamB
+FROM dbo.HeaderStats
+ORDER BY 1
+
+UPDATE dbo.HeaderStats
+SET TeamB = 'PARTIZAN'
+WHERE TeamB LIKE '%PARTIZAN%'
+
+SELECT *
+FROM dbo.HeaderStats
+WHERE TeamA LIKE 'N/D'
